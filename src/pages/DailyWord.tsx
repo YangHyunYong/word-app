@@ -5,11 +5,13 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Button,
   Flex,
   Text,
 } from "@chakra-ui/react";
 import { FC, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { FiVolume2 } from "react-icons/fi";
 
 const DailyWord: FC = () => {
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ const DailyWord: FC = () => {
   }, []);
 
   return (
-    <Flex bgColor="red.100" flexDir="column" maxW={768} mx="auto" minH="100vh">
+    <Flex flexDir="column" maxW={768} mx="auto" minH="100vh">
       <Text fontSize={24} fontWeight="bold" textAlign="center" mt={8}>
         <Text fontWeight="bold" display="inline-block">
           Day {wordData.day}
@@ -45,6 +47,15 @@ const DailyWord: FC = () => {
                 <AccordionIcon />
               </AccordionButton>
             </h2>
+            <Button
+              size="xs"
+              mb={2}
+              ml={2}
+              variant="ghost"
+              colorScheme="yellow"
+            >
+              <FiVolume2 />
+            </Button>
             <AccordionPanel pb={4}>{v.korean}</AccordionPanel>
           </AccordionItem>
         ))}
