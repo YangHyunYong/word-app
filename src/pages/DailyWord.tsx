@@ -1,63 +1,56 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  Button,
-  Flex,
-  Text,
-} from "@chakra-ui/react";
+import { Accordion, Button, Flex, Text } from "@chakra-ui/react";
 import { FC, useEffect } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { FiVolume2 } from "react-icons/fi";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FiArrowLeft } from "react-icons/fi";
+
+import WordCard from "../components/WordCard";
 
 const DailyWord: FC = () => {
   const navigate = useNavigate();
 
-  const { day } = useParams();
-
   const { state } = useLocation();
-  const { wordData }: { wordData: IWords } = state;
+  // const wordData = state.wordData ?? null;
 
   useEffect(() => {
     if (!state) {
       navigate("/");
     }
+
+    console.log(state);
   }, []);
 
-  return (
-    <Flex flexDir="column" maxW={768} mx="auto" minH="100vh">
-      <Text fontSize={24} fontWeight="bold" textAlign="center" mt={8}>
-        <Text fontWeight="bold" display="inline-block">
-          Day {wordData.day}
-        </Text>
-        - {wordData.title}
-      </Text>
+  if (!state) return <div>Loading...</div>;
 
+  return (
+    <Flex
+      position="relative"
+      flexDir="column"
+      maxW={768}
+      mx="auto"
+      minH="100vh"
+    >
+      <Button
+        m={4}
+        position="absolute"
+        variant="ghost"
+        colorScheme="transparent"
+        onClick={() => navigate("/")}
+      >
+        <FiArrowLeft />
+      </Button>
+      <Flex
+        fontSize={24}
+        fontWeight="bold"
+        textAlign="center"
+        mt={8}
+        justifyContent="center"
+      >
+        <Text fontWeight="bold">Day {state.wordData.day}</Text> -{" "}
+        {state.wordData.title}
+      </Flex>
       <Accordion mt={8} allowMultiple>
-        {wordData.sentences.map((v, i) => (
-          <AccordionItem key={i}>
-            <h2>
-              <AccordionButton>
-                <Box as="span" flex="1" textAlign="left">
-                  {v.english}
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <Button
-              size="xs"
-              mb={2}
-              ml={2}
-              variant="ghost"
-              colorScheme="yellow"
-            >
-              <FiVolume2 />
-            </Button>
-            <AccordionPanel pb={4}>{v.korean}</AccordionPanel>
-          </AccordionItem>
+        {state.wordData.sentences.map((v: ISentence, i: number) => (
+          <WordCard key={i} sentence={v} />
         ))}
       </Accordion>
     </Flex>
